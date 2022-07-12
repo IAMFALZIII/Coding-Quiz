@@ -83,4 +83,29 @@ function render(questionIndex) {
     })
 }
 
+function compare(event) {
+    var element = event.target;
+    
+    if (element.matches("li")) {
+        var createDiv = document.createElement("div");
+        createDiv.setAttribute("id", "createDiv");
+        if (element.textContent == questions[questionIndex].answer) {
+            score++;
+            createDiv.textContent = "Correct!"
+        } else {
+            timeLeft = timeLeft - timePenalty;
+            createDiv.textContent = "Wrong! Correct answer is:" + questions[questionIndex].answer;
+        }
+    }
+
+    questionIndex++;
+
+    if (questionIndex >= questions.length) {
+        allDone();
+        createDiv.textContent = "End of quiz!!" + " " + "You got " + score + "/" + questions.length + "correct!!";
+    } else {
+        render(questionIndex);
+    }
+    questionsDiv.appendChild(createDiv);
+}
 
