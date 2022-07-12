@@ -1,38 +1,39 @@
 //* Questions for Quiz//
 
-var  questionsDiv = [{
+var  questions = [
+    {
     title: "Commonly used data types DO NOT include:",
-    answers: ["strings", "booleans", "alerts", "numbers"],
+    choices: ["strings", "booleans", "alerts", "numbers"],
     answer: "alerts"
 },
 
 {
     title: "The condition in an if / else statement is enclosed within ____.",
-    answers: ["quotes", "curly brackets", "parentheses", "square brackets"],
+    choices: ["quotes", "curly brackets", "parentheses", "square brackets"],
     answer: "parentheses"
 },
 
 {
     title: "Arrays in Javascript can be used to store ____.",
-    answers: ["numbers and strings", "other arrays", "booleans", "all of the above"],
+    choices: ["numbers and strings", "other arrays", "booleans", "all of the above"],
     answer: "all of the above"
 },
 
 {
     title: "String values must be enclosed within ____ when being assigned to variables.",
-    answers: ["commas", "curly brackets", "quotes", "parenthesis"],
+    choices: ["commas", "curly brackets", "quotes", "parenthesis"],
     answer: "all of the above"
 },
 
 {
     title: "String values must be enclosed within ____ when being assigned to variables.",
-    answers: ["commas", "curly brackets", "quotes", "parenthesis"],
+    choices: ["commas", "curly brackets", "quotes", "parenthesis"],
     answer: "quotes"
 },
 
 {
     title: "A very useful tool for used during development and debugging for printing content to the debugger is:",
-    answers: ["Javascript", "terminal / bash", "for loops", "console log"],
+    choices: ["Javascript", "terminal / bash", "for loops", "console log"],
     answer: "console.log"
 }];
 
@@ -43,43 +44,45 @@ var questionIndex = 0;
 
 var currentTime = document.querySelector("#currentTime");
 var timer = document.querySelector("#startTime");
-var  questionsDiv = document.querySelector("# questionsDiv");
+var questionsDiv = document.querySelector("#questionsDiv");
 var wrapper = document.querySelector("#wrapper");
+
 //* Time for answering//
 var timeLeft = 75;
-var holdInt = 0;
+var holdInterval = 0;
 var timePenalty = 10;
 var ulCreate = document.createElement("ul");
 
 //*Adding Timer when button to start is clicked//
 timer.addEventListener("click", function () {
-    if (holdInt === 0) {
-        holdInt = setInterval(function () {
+    if (holdInterval === 0) {
+        holdInterval = setInterval(function () {
             timeLeft--;
             currentTime.textContent = "Time: " + timeLeft;
 
             if (timeLeft <= 0) {
-                clearInterval(holdInt);
+                clearInterval(holdInterval);
                 allDone();
                 currentTime.textContent = "Time is up!!";
             }
-        }, 1000)
+        }, 1000);
     }
     render(questionIndex);
 });
 
-//* Renders questions and answers to page//
+//* Renders questions and choices to page//
 function render(questionIndex) {
-     questionsDiv.innerHTML = "";
+    questionsDiv.innerHTML = "";
     ulCreate.innerHTML = "";
 
     for (var i = 0; i < questions.length; i++) {
+
         var userQuestion = questions[questionIndex].title;
-        var userAnswers = questions[questionIndex].answers
+        var userChoices = questions[questionIndex].choices
         questionsDiv.textContent = userQuestion;
     }
 
-    userAnswers.forEach(function (newItem) {
+    userChoices.forEach(function (newItem) {
         var listItem = document.createElement("li");
         listItem.textContent = newItem;
         questionsDiv.appendChild(ulCreate);
@@ -88,7 +91,7 @@ function render(questionIndex) {
     })
 }
 
-//* To compare answers//
+//* To compare choices//
 function compare(event) {
     var element = event.target;
     
@@ -136,7 +139,7 @@ function allDone() {
     if (timeLeft >= 0) {
         var timeRemaining = timeLeft;
         var createP2 = document.createElement("p");
-        clearInterval(holdInt);
+        clearInterval(holdInterval);
         createP.textContent = "Final Score: " + timeRemaining;
 
         questionsDiv.appendChild(createP2);
@@ -186,5 +189,5 @@ function allDone() {
 
             window.location.replace("./highscores.html");
         }
-    })
+    });
 }
