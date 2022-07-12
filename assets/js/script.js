@@ -1,4 +1,4 @@
-var questions = [{
+var  questionsDiv = [{
     title: "Commonly used data types DO NOT include:",
     answers: ["strings", "booleans", "alerts", "numbers"],
     answer: "alerts"
@@ -33,3 +33,54 @@ var questions = [{
     answers: ["Javascript", "terminal / bash", "for loops", "console log"],
     answer: "console.log"
 }];
+
+var score = 0;
+var questionIndex = 0;
+
+var currentTime = document.querySelector("#currentTime");
+var timer = document.querySelector("#startTime");
+var  questionsDiv = document.querySelector("# questionsDiv");
+var wrapper = document.querySelector("#wrapper");
+
+var timeLeft = 75;
+var holdInt = 0;
+var timePenalty = 10;
+var ulCreate = document.createElement("ul");
+
+//*Adding Timer when button to start is clicked//
+timer.addEventListener("click", function () {
+    if (holdInt === 0) {
+        holdInt = setInterval(function () {
+            timeLeft--;
+            currentTime.textContent = "Time: " + timeLeft;
+
+            if (timeLeft <= 0) {
+                clearInterval(holdInt);
+                allDone();
+                currentTime.textContent = "Time is up!!";
+            }
+        }, 1000)
+    }
+    render(questionIndex);
+});
+
+function render(questionIndex) {
+     questionsDiv.innerHTML = "";
+    ulCreate.innerHTML = "";
+
+    for (var i = 0; i < questions.length; i++) {
+        var userQuestion = questions[questionIndex].title;
+        var userAnswers = questions[questionIndex].answers
+        questionsDiv.textContent = userQuestion;
+    }
+
+    userAnswers.forEach(function (newItem) {
+        var listItem = document.createElement("li");
+        listItem.textContent = newItem;
+        questionsDiv.appendChild(ulCreate);
+        ulCreate.appendChild(listItem);
+        listItem.addEventListener("click", (compare));
+    })
+}
+
+
