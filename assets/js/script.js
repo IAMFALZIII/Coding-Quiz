@@ -1,3 +1,5 @@
+//* Questions for Quiz//
+
 var  questionsDiv = [{
     title: "Commonly used data types DO NOT include:",
     answers: ["strings", "booleans", "alerts", "numbers"],
@@ -34,6 +36,8 @@ var  questionsDiv = [{
     answer: "console.log"
 }];
 
+//*Working code with declared variables//
+
 var score = 0;
 var questionIndex = 0;
 
@@ -41,7 +45,7 @@ var currentTime = document.querySelector("#currentTime");
 var timer = document.querySelector("#startTime");
 var  questionsDiv = document.querySelector("# questionsDiv");
 var wrapper = document.querySelector("#wrapper");
-
+//* Time for answering//
 var timeLeft = 75;
 var holdInt = 0;
 var timePenalty = 10;
@@ -64,6 +68,7 @@ timer.addEventListener("click", function () {
     render(questionIndex);
 });
 
+//* Renders questions and answers to page//
 function render(questionIndex) {
      questionsDiv.innerHTML = "";
     ulCreate.innerHTML = "";
@@ -83,6 +88,7 @@ function render(questionIndex) {
     })
 }
 
+//* To compare answers//
 function compare(event) {
     var element = event.target;
     
@@ -98,6 +104,7 @@ function compare(event) {
         }
     }
 
+    //* This determines what question quiz taker is on//
     questionIndex++;
 
     if (questionIndex >= questions.length) {
@@ -109,3 +116,75 @@ function compare(event) {
     questionsDiv.appendChild(createDiv);
 }
 
+//* 'allDone' will append the last page//
+function allDone() {
+    questionsDiv.innerHTML = "";
+    currentTime.innerHTML = "";
+
+    var createH1 = document.createElement("h1");
+    createH1.setAttribute("id", "createH1");
+    createH1.textContent = "All Done!"
+
+    questionsDiv.appendChild(createH1);
+
+    var createP = document.createElement("p");
+    createP.setAttribute("id", "createP");
+
+    questionsDiv.appendChild(createP);
+
+    //* Makes time remaining the score like in readme demo//
+    if (timeLeft >= 0) {
+        var timeRemaining = timeLeft;
+        var createP2 = document.createElement("p");
+        clearInterval(holdInt);
+        createP.textContent = "Final Score: " + timeRemaining;
+
+        questionsDiv.appendChild(createP2);
+    }
+
+    var createLabel = document.createElement("label");
+    createLabel.setAttribute("id", "createLabel");
+    createLabel.textContent = "Enter your initials: ";
+
+    questionsDiv.appendChild(createLabel);
+
+    var createInput = document.createElement("input");
+    createInput.setAttribute("type", "text");
+    createInput.setAttribute("id", "initials");
+    createInput.textContent = "";
+
+    questionsDiv.appendChild(createInput);
+
+    var createSubmit = document.createElement("button");
+    createSubmit.setAttribute("type", "submit");
+    createSubmit.setAttribute("id", "Submit");
+    createSubmit.textContent = "Submit";
+
+    questionsDiv.appendChild(createSubmit);
+
+    createSubmit.addEventListener("click", function () {
+        var userInitials = createInput.value;
+
+        if (userInitials === null) {
+            console.log("No Initials Entered!!!");
+        } else {
+            var finalScore = {
+                initials: userInitials,
+                score: timeRemaining
+            }
+            console.log(finalScore);
+            var allScores = localStorage.getItem("allscores");
+
+            if(allScores === null) {
+                allScores = [];
+            } else {
+                allScores = JSON.parse(allScores);
+            }
+            allScores.push(finalScore);
+            var newScore = JSON.stringify(allScores);
+            localStorage.setItem("allScores", newScore);
+
+            window.location.replace("./highscores.html");
+        }
+    })
+}
